@@ -1,0 +1,88 @@
+.card {
+    max-width: 80%;
+    padding: 1em;
+}
+
+.imgWid {
+    max-width: 800px;
+    border-radius: 7px;
+}
+
+.cardBody {
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cardText {
+    margin-bottom: 0;
+}
+
+
+.btnInCard {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 50px;
+    width: 50px;
+    text-align: center;
+}
+
+.textDates {
+    font-weight: bold;
+}
+
+.divDates {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.divLocation {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.textLocation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.divDescriptionAndActivities {
+    display: flex;
+    width: 100%;
+    font-style: italic;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.divBottomCard{ 
+    margin-top: 2.5rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.divButtonsInCard {
+    display: flex;
+}
+
+.divPrice {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 1rem;
+    color: rgb(255, 191, 0);
+}
