@@ -3,6 +3,7 @@ import { TripInterface } from "../../Interfaces/TripInterface";
 import { useContext } from 'react';
 import { PageContext } from '../../Contexts/PageContext';
 import axios from 'axios';
+import { TokenContext } from '../../Contexts/AuthUserToken';
 
 type Props = {
     trip: TripInterface;
@@ -13,6 +14,11 @@ const TripCard = ({trip, refreshTripsInParent}: Props) => {
   
   const pageContext = useContext(PageContext);
   if (!pageContext) return;
+
+  
+  const tokenContext = useContext(TokenContext);
+  if (!tokenContext) return;
+  const {token} = tokenContext;
 
   function handleClickTrip() {
     if (!pageContext) return;
@@ -26,12 +32,16 @@ const TripCard = ({trip, refreshTripsInParent}: Props) => {
 
   async function handleDeleteTrip(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     event.stopPropagation()
+    if (!token) {
+      console.log('You must be connected to make this action');
+      return
+    }
     const post = await axios.delete(
       `http://localhost:3000/api/trips/${trip.id}`,
       {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'test-token'
+          'Authorization': token
         }
       }
     )
@@ -44,6 +54,10 @@ const TripCard = ({trip, refreshTripsInParent}: Props) => {
 
   function handleEditTrip(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
     event.stopPropagation();
+    if (!token) {
+      console.log('You must be connected to make this action');
+      return
+    }
     if (!pageContext) return;
     pageContext.setPage({
       currentPage: "UpdateTripForm",

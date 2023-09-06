@@ -8,6 +8,7 @@ import NewTripForm from './Components/NewTripForm/NewTripForm';
 import UpdateTripForm from './Components/UpdateTripForm/UpdateTripForm';
 import UserLogin from './Components/UserLogin/UserLogin';
 import UserRegistration from './Components/UserRegistration/UserRegistration';
+import TokenContextProvider from './Contexts/AuthUserToken';
 
 function App() {
 
@@ -17,7 +18,8 @@ function App() {
   const { page } = pageContext;
   
   return (
-    <>
+    <TokenContextProvider>
+      <>
         {
           function (page: PageObj): JSX.Element {
             switch (page.currentPage) {
@@ -40,7 +42,9 @@ function App() {
             }
           }(page)
         }
-    </>
+      </>
+    </TokenContextProvider>
+    
   )
 }
 

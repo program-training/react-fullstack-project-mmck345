@@ -9,7 +9,7 @@ const NewTripForm = () => {
   if (!pageContext) return;
 
   return (
-    <div className={styles.mainContainer}>
+    <div>
       <button type="button" onClick={() => console.log("OnClickFromNewTripForm")}>
         Show More Details
       </button>

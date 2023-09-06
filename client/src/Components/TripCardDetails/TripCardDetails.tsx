@@ -30,7 +30,6 @@ const TripCardDetails = ({trip}: Props) => {
                   <h4>Activities:</h4>
                   <ul>
                     {
-                      //FIXME: activities can be not type array and map not a function -> send to server array
                       trip.activities.length > 0 && trip.activities.map((active) => <li>{active}</li>)
                     }
                   </ul>

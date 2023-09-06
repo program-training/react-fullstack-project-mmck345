@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { DevTool } from '@hookform/devtools'
 import { TripFormInterface } from '../../Interfaces/TripInterface';
 import axios from 'axios';
+import { TokenContext } from '../../Contexts/AuthUserToken';
 
 interface Props {
     trip: Partial<TripFormInterface>,
@@ -16,19 +17,26 @@ const TripForm = ({trip, action }: Props) => {
   const pageContext = useContext(PageContext);
   if (!pageContext) return;
 
+  
+  const tokenContext = useContext(TokenContext);
+  if (!tokenContext) return;
+  const {token} = tokenContext;
+
   const formNewTrip  = useForm<TripFormInterface>();
   const {register, control, handleSubmit} = formNewTrip;
 
 
-  const postTripToServer = async (data: string) => {
-    //FIXME: activities can be not type array and map not a function -> send to server array
+  const postTripToServer = async (data: TripFormInterface) => {
+    if (!token) {
+      console.log('You must be connected to make this action');
+      return
+    }
     const post = await axios.post(
       `http://localhost:3000/api/trips`,
        data,
       {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'test-token'
+          'Authorization': token
         }
       }
     )
@@ -36,15 +44,17 @@ const TripForm = ({trip, action }: Props) => {
   }
 
   
-  const updateTripToServer = async (data: string) => {
-    //FIXME: activities can be not type array and map not a function -> send to server array
+  const updateTripToServer = async (data: TripFormInterface) => {
+    if (!token) {
+      console.log('You must be connected to make this action');
+      return
+    }
     const put = await axios.put(
       `http://localhost:3000/api/trips/${trip.id}`,
        data,
       {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'test-token'
+          'Authorization': token
         }
       }
     )
@@ -52,12 +62,15 @@ const TripForm = ({trip, action }: Props) => {
   }
 
   const onSubmit = (data: TripFormInterface) => {
-    action === "create" ? postTripToServer(JSON.stringify(data)) : updateTripToServer(JSON.stringify(data));
+    let strActivities = data.activities as unknown as string;
+    data.activities = strActivities.split(",");
+    console.log(data);
+    action === "create" ? postTripToServer(data) : updateTripToServer(data);
   }
 
 
   return (
-    <div>
+    <div className={styles.formContainer}>
       <form onSubmit={handleSubmit(onSubmit)} className={`${styles.form}`}>
         
         <div className={`${styles.formGroup} form-group`}>
