@@ -24,10 +24,6 @@ const TripDetail = () => {
 
   return (
     <div>
-      <button type="button" onClick={() => pageContext.setPage({currentPage: "Trips"})}>
-          Go To Trips
-      </button>
-
       <div className={styles.DivPreviewTrip}>
         {
           tripData && <TripCardDetails trip={tripData}></TripCardDetails>

@@ -10,10 +10,6 @@ const NewTripForm = () => {
 
   return (
     <div>
-      <button type="button" onClick={() => console.log("OnClickFromNewTripForm")}>
-        Show More Details
-      </button>
-
       <TripForm trip={{}} action='create'></TripForm>
     </div>
   );

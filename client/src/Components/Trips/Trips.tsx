@@ -6,6 +6,7 @@ import axios from "axios";
 import TripCard from "../TripCard/TripCard";
 
 const Trips = () => {
+
   const [tripsData, setTripsData] = useState<TripInterface[] | null>([])
   const pageContext = useContext(PageContext);
   if (!pageContext) return;
@@ -21,17 +22,11 @@ const Trips = () => {
   }, [])
 
   useEffect(() => {
-    console.log(tripsData);
   }, [tripsData])
 
   return (
     <div>
-      <button type="button" onClick={() => pageContext.setPage({currentPage: "Home"})}>
-          Go To Home
-      </button>
-      <button type="button" onClick={() => pageContext.setPage({currentPage: "NewTripForm"})}>
-          Create New Trip
-      </button>
+
       <div className={styles.containerCards}>
         {
           tripsData && tripsData.map((trip: TripInterface) => <TripCard refreshTripsInParent={fetchData} key={trip.id} trip={trip}/>)

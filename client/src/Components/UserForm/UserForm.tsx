@@ -1,5 +1,5 @@
 import styles from './UserForm.module.css'
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { PageContext } from "../../Contexts/PageContext";
 import { useForm } from "react-hook-form";
 import { DevTool } from '@hookform/devtools'
@@ -25,7 +25,7 @@ const UserForm = ({ action }: Props) => {
   
   const tokenContext = useContext(TokenContext);
   if (!tokenContext) return;
-  const {token, setToken} = tokenContext;
+  const {setToken} = tokenContext;
 
   const userForm  = useForm<UserData>();
   const {register, control, handleSubmit} = userForm;
@@ -49,7 +49,6 @@ const UserForm = ({ action }: Props) => {
         password: data.password
        }
     )
-    console.log(post);
     let token = post.data.responseObj.token;
     localStorage.setItem('token', token);
     setToken(token ? token : null);
@@ -58,7 +57,6 @@ const UserForm = ({ action }: Props) => {
   
 
   const onSubmit = (data: UserData) => {
-    console.log(data);
     action === "register" ? registerUser(data) : loginUser(data);
   }
 

@@ -23,11 +23,6 @@ const UpdateTripFrom = () => {
 
   return (
     <div>
-      <button type="button" onClick={() => console.log("OnClickFromUpdateTripFrom")}>
-        Show More Details
-      </button>
-
-      
       <TripForm trip={tripData ? tripData : {}} action='update'></TripForm>
     </div>
   );

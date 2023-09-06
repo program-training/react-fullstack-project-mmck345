@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { PageContext } from "../../Contexts/PageContext";
 import UserForm from "../UserForm/UserForm";
 
@@ -8,10 +8,6 @@ const UserRegistration = () => {
 
   return (
     <div>
-      <button type="button" onClick={() => console.log('RegisterUserPage')}>
-        Show More Details
-      </button>
-
       <UserForm action="register"></UserForm>
     </div>
   );

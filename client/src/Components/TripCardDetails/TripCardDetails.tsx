@@ -1,5 +1,9 @@
 import styles from './TripCardDetails.module.css'
 import { TripDetailsInterface } from "../../Interfaces/TripInterface";
+import { useContext } from 'react';
+import { PageContext } from '../../Contexts/PageContext';
+import { TokenContext } from '../../Contexts/AuthUserToken';
+import axios from 'axios';
 
 type Props = {
     trip: TripDetailsInterface;
@@ -7,10 +11,56 @@ type Props = {
 
 const TripCardDetails = ({trip}: Props) => {
 
+
+  const pageContext = useContext(PageContext);
+  if (!pageContext) return;
+
+  
+  const tokenContext = useContext(TokenContext);
+  if (!tokenContext) return;
+  const {token} = tokenContext;
+
+  async function handleDeleteTrip(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    event.stopPropagation()
+    if (!token) {
+      console.log('You must be connected to make this action');
+      return
+    }
+    try {
+      const post = await axios.delete(`http://localhost:3000/api/trips/${trip.id}`, {headers: {'Authorization': token}})
+      if (post.status === 200) {
+        pageContext && pageContext.setPage({currentPage: "Trips"})
+      }
+    }
+    catch (error) {
+      if (error && axios.isAxiosError(error) ) {
+        error.response?.status === 401 && pageContext && pageContext.setPage({currentPage: "UserLogin"})
+      }
+    }
+    
+    
+    
+  }
+
+  function handleEditTrip(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+    event.stopPropagation();
+    if (!token) {
+      console.log('You must be connected to make this action');
+      return
+    }
+    if (!pageContext) return;
+    pageContext.setPage({
+      currentPage: "UpdateTripForm",
+      arg: {
+        currentTripId: trip.id
+      }
+    })
+  }
+
   return (
     <div className={`${styles.card} card`}>
-          <div className={`${styles.imgWid} bg-image hover-overlay ripple`} data-mdb-ripple-color="light">
-            <img src={trip.image} className={`img-fluid`} />
+          <div className={`${styles.imgWid} bg-image hover-overlay ripple`} data-mdb-ripple-color="light" >
+            <img src={trip.image} className={`img-fluid`} style={{borderRadius:"7px"}}/>
             <a href="#!">
             <div className="mask" style={{backgroundColor: "rgba(251, 251, 251, 0.15)"}}>
 
@@ -44,8 +94,8 @@ const TripCardDetails = ({trip}: Props) => {
           </div>
           <div className={styles.divBottomCard}>
             <div className={styles.divButtonsInCard}>
-              <button type="button" className={styles.btnInCard}><span className="material-symbols-outlined">delete</span></button>
-              <button type="button" className={styles.btnInCard}><span className="material-symbols-outlined">edit</span></button>
+              <button type="button" className={styles.btnInCard} onClick={(e) => {handleDeleteTrip(e)}}><span className="material-symbols-outlined">delete</span></button>
+              <button type="button" className={styles.btnInCard} onClick={(e) => {handleEditTrip(e)}}><span className="material-symbols-outlined">edit</span></button>
             </div>
             <div className={styles.divPrice}>
               <h4>{`Price: ${trip.price}$`}</h4>

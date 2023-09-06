@@ -8,10 +8,6 @@ const UserLogin = () => {
 
   return (
     <div>
-      <button type="button" onClick={() => console.log("OnClickFromUserLogin")}>
-        Show More Details
-      </button>
-      
       <UserForm action="login"></UserForm>
     </div>
   );

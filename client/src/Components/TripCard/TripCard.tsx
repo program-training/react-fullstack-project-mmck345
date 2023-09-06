@@ -36,19 +36,16 @@ const TripCard = ({trip, refreshTripsInParent}: Props) => {
       console.log('You must be connected to make this action');
       return
     }
-    const post = await axios.delete(
-      `http://localhost:3000/api/trips/${trip.id}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token
-        }
+    try {
+      const post = await axios.delete(`http://localhost:3000/api/trips/${trip.id}`, {headers: {'Authorization': token}})
+      if (post.status === 200) {
+        refreshTripsInParent()
       }
-    )
-    console.log(post.status);
-    
-    if (post.status as number === 200) {
-      refreshTripsInParent()
+    }
+    catch (error) {
+      if (error && axios.isAxiosError(error) ) {
+        error.response?.status === 401 && pageContext && pageContext.setPage({currentPage: "UserLogin"})
+      }
     }
   }
 
@@ -69,8 +66,8 @@ const TripCard = ({trip, refreshTripsInParent}: Props) => {
 
   return (
     <div className={`${styles.card} card`} onClick={handleClickTrip}>
-          <div className="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-            <img src={trip.image} className={`${styles.imgFluid}, img-fluid`} />
+          <div className={`bg-image hover-overlay ripple`} data-mdb-ripple-color="light" >
+            <img src={trip.image} className={`${styles.imgFluid}, img-fluid`} style={{borderRadius:"7px", maxHeight:"250px"}} />
             <a href="#!">
             <div className="mask" style={{backgroundColor: "rgba(251, 251, 251, 0.15)"}}>
 
