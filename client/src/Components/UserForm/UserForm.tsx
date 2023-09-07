@@ -31,28 +31,44 @@ const UserForm = ({ action }: Props) => {
   const {register, control, handleSubmit} = userForm;
 
   const registerUser = async (data: UserData) => {
-    const post = await axios.post(
-      `http://localhost:3000/api/auth/register`,
-       {
-        email: data.email,
-        password: data.password
-       }
-    )
-    console.log(post);
+    try {
+      const post = await axios.post(`http://localhost:3000/api/auth/register`, {email: data.email, password: data.password})
+      if (post.status === 201) {
+        console.log(post.data.message);
+        pageContext && pageContext.setPage({currentPage: "UserLogin"});
+      }
+    }
+    catch (error) {
+      if (error && axios.isAxiosError(error) ) {
+        console.log(error);
+        error.response?.data.error === "User already exists" && pageContext.setPage({currentPage: "UserLogin"})
+        //TODO: handle others error
+      }
+    }
   }
 
   const loginUser = async (data: UserData) => {
-    const post = await axios.post(
-      `http://localhost:3000/api/auth/login`,
-       {
-        email: data.email,
-        password: data.password
-       }
-    )
-    let token = post.data.responseObj.token;
-    localStorage.setItem('token', token);
-    setToken(token ? token : null);
 
+    try {
+      const post = await axios.post(`http://localhost:3000/api/auth/login`, {email: data.email, password: data.password})
+      if (post.status === 200) {
+        let token = post.data.responseObj.token;
+        localStorage.setItem('token', token);
+        localStorage.setItem('userEmail', post.data.responseObj.user.email);
+        setToken(token ? token : null);
+        console.log(post.data.message);
+        pageContext && pageContext.setPage({currentPage: "Trips"});
+      }
+    }
+    catch (error) {
+      if (error && axios.isAxiosError(error) ) {
+        console.log(error);
+        error.response?.data.error === "Invalid credentials" && console.log("Invalid credentials");
+        //TODO: handle others error
+      }
+    }
+
+    
   }
   
 
@@ -79,7 +95,7 @@ const UserForm = ({ action }: Props) => {
           action === "register" && (
             <div className={`${styles.formGroup} form-group`}>
               <label htmlFor="rePassword">Type password again: </label>
-              <input type="rePassword" className={`form-control`}  id="inputRePasswordId" {...register('rePassword')}/>
+              <input type="password" className={`form-control`}  id="inputRePasswordId" {...register('rePassword')}/>
             </div>
             )
         }
