@@ -1,0 +1,32 @@
+#root {
+    text-align: start;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 80vh;
+}
+
+.formContainer {
+    width: 600px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.formGroup {
+    margin: 10px 0;
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bolder;
+    font-family: Ubuntu, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+input {
+    width: 90%;
+}
